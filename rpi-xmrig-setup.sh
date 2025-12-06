@@ -75,8 +75,9 @@ done
 $HOME/xmrig/xmrig -o stratum+ssl://rx.unmineable.com:4444 -k -u [coin]:[address].unmineable_miner_RPiSub#elce-axze --http-port=60070 -a rx
 EOF
 chmod +x ~/start-xmrig.sh
+INSTALL_DIR=$(pwd)
 if ! sudo crontab -l 2>/dev/null | grep -q "start-xmrig.sh"; then
-    (sudo crontab -l 2>/dev/null; echo "@reboot $HOME/start-xmrig.sh >> $HOME/xmrig.log 2>&1") | sudo crontab -
+    (sudo crontab -l 2>/dev/null; echo "@reboot $INSTALL_DIR/start-xmrig.sh >> $INSTALL_DIR/xmrig.log 2>&1") | sudo crontab -
     echo "Auto-start added to Root Crontab."
 else
     echo "Crontab already configured. Skipping."
@@ -84,9 +85,9 @@ fi
 echo "Execution script generated."
 
 cd
-echo Now installing Cockpit
+echo "Now installing Cockpit"
 . /etc/os-release
 sudo apt install -y -t ${VERSION_CODENAME}-backports cockpit || sudo apt install -y cockpit
 echo Cockpit installation complete.
-echo You can access Cockpit by navigating to http://[your_raspberry_pi_ip]:9090. Your Raspberry Pi's IP address is
+echo "You can access Cockpit by navigating to http://[your_raspberry_pi_ip]:9090. Your Raspberry Pi's IP address is"
 hostname -I | awk '{print $1}'

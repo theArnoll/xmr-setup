@@ -10,6 +10,8 @@ This file is for Raspberry Pi that runs Ubuntu Server to be configured to an XMR
 
 - Cockpit
 
+### DO NOT just disconnect the monitor after dropping the script. There're some purple screens to deal with.
+
 ### To start the setup, run:
 
 ```shell
