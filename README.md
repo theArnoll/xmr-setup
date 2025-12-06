@@ -29,7 +29,8 @@ wget https://pse.is/rpi-xmrig-setup
 #### Then,
 
 ```shell
-chmod +x rpi-xmrig-setup && ./rpi-xmrig-setup
+chmod +x rpi-xmrig-setup
+./rpi-xmrig-setup
 ```
 
 #### After that,
