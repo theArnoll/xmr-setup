@@ -19,7 +19,7 @@ echo Swappiness configured.
 
 echo Now installing Log2Ram to reduce SD card wear
 sudo apt install -y curl gnupg wget
-echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyr ing.gpg] http://packages.azlux.fr/debian/ bookworm main" | sudo tee /etc/apt/sources.list.d/azlux.list
+echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ bookworm main" | sudo tee /etc/apt/sources.list.d/azlux.list
 sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg https://azlux.fr/repo.gpg
 sudo apt update
 sudo apt install -y log2ram
