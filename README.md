@@ -2,6 +2,8 @@ This file is for Raspberry Pi that runs Ubuntu Server to be configured to an XMR
 
 ### What this script does
 
+- Wi-Fi Configuration
+
 - Swappiness (Swap when RAM usage hits 90%)
 
 - Log2Ram
@@ -36,6 +38,8 @@ chmod +x rpi-xmrig-setup
 ```
 
 #### After that,
+
+Enter the Wi-Fi name (SSID) and password to try to connect with Wi-Fi.
 
 Wait until `Setup complete!` shows, and check your Cockpit IP address and note it down. You can now disconnect the monitor.
 

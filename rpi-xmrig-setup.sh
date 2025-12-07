@@ -6,12 +6,51 @@ USER=$(whoami)
 set -e
 
 echo === Please enter your password to proceed with the setup
+sudo -v
 # No purple screens
 export DEBIAN_FRONTEND=noninteractive
-
 if [ -f /etc/needrestart/needrestart.conf ]; then
     sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 fi
+
+echo === Now configuring Wi-Fi
+read -p "Please enter the name (SSID) of your Wi-Fi: " WIFI_SSID
+read -s -p "Please enter your Wi-Fi Password (Password hidden): " WIFI_PASS
+echo
+WIFI_IFACE=$(ip a | grep -oP 'wlan[0-9]+' | head -1)
+if [ -z "$WIFI_IFACE" ]; then
+    echo "Warning: Wireless adapter (wlan0/wlan1 etc.) not detected. Assuming wired connection only."
+else
+    echo ">> Wireless adapter detected: $WIFI_IFACE"
+    cat <<NETPLAN_CONFIG | sudo tee /etc/netplan/99-wifi-config.yaml > /dev/null
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: true
+      optional: true
+    ens33:
+      dhcp4: true
+      optional: true
+  wifis:
+    $WIFI_IFACE:
+      dhcp4: true
+      access-points:
+        "$WIFI_SSID":
+          password: "$WIFI_PASS"
+NETPLAN_CONFIG
+    echo ">> Applying internet settings..."
+    sudo netplan apply
+    echo ">> Waiting Wi-Fi finishing connection (5s)..."
+    sleep 5
+    if ! ping -c 1 8.8.8.8 &> /dev/null; then
+        echo "! Wi-Fi connection could be failed. Please check your SSID and password."
+    else
+        echo "O Wi-Fi connected successfully."
+    fi
+fi
+echo === Wi-Fi configuration complete
 
 echo === Now configuring swappiness
 if grep -q "vm.swappiness=10" /etc/sysctl.conf; then
